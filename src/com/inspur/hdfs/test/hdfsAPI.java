@@ -26,16 +26,16 @@ public class hdfsAPI {
 	     String time=sdf.format(date);
 		int i=0,j=0;
 		try {	
-			PrintStream ps = new PrintStream("hdfs_report.txt");			
+			PrintStream ps = new PrintStream("output/hdfs_report.txt");			
 	        dao d=new dao();
 	    	List resList = new ArrayList();							
 			resList=HdfsUtil.listFileStatuses("/tmp");
 			if(resList != null){
 				i++;
 				String message=i+"、获取tmp路径下文件和目录信息成功："+resList;
-				ps.println(message);
-				System.out.println(message);
+				ps.println(message);				
 				d.save(i, message);
+				System.out.println(message);
 			}else {
 				ps.println(i+"、获取user路径下文件和目录信息失败："+resList+ "/ 失败");
 				j++;				
@@ -60,9 +60,9 @@ public class hdfsAPI {
 				if(mdar) {
 					i++;
 					String message=i+"、创建文件目录成功："+dirRight+ " 创建成功赋权成功";
-					ps.println(message);
-					System.out.println(message);
+					ps.println(message);					
 					d.save(i, message);
+					System.out.println(message);
 					}else {
 						j++;
 						ps.println(i+"、创建文件目录失败："+dirRight+"  创建成功赋权失败");

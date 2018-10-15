@@ -1,51 +1,37 @@
 package com.inspur.hdfs.test;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
+
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.security.PrivilegedExceptionAction;
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
-import org.apache.commons.httpclient.methods.multipart.FilePart;
-import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
-import org.apache.commons.httpclient.methods.multipart.Part;
-import org.apache.commons.httpclient.methods.multipart.StringPart;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.net.PrintCommandListener;
+
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.ContentSummary;
 import org.apache.hadoop.fs.FSDataInputStream;
-import org.apache.hadoop.fs.FSDataOutputStream;
+
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.permission.FsAction;
 import org.apache.hadoop.fs.permission.FsPermission;
-import org.apache.hadoop.hdfs.DistributedFileSystem;
+
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.log4j.Logger;
 
 import com.inspur.hdfs.util.logException;
-import com.sun.jersey.server.impl.model.method.dispatch.VoidVoidDispatchProvider;
+
 
 public class HdfsUtil {
 	static Logger logger = Logger.getLogger(HdfsUtil.class);
@@ -53,7 +39,7 @@ public class HdfsUtil {
 	 public static void main(String[] args) throws Exception {
 	
 	 try {
-	changeDirAllRight("/cuiaq", 0, 0, 0);
+	makeDir("/qqqqq");
 	 System.out.println("ok");
 	 } catch (Exception e) {
 	 // TODO Auto-generated catch block
@@ -75,15 +61,19 @@ public class HdfsUtil {
 	public static FileSystem getFileSystem() throws Exception {
 		FileSystem fs = null;
 		// String principal = "cuiaq1218-tenant@IDAP.COM";// user为用户
+		//String principal = "hdfs-cluster9290@INDATA.COM";
 		String principal = "hdfs-cluster_indata@INDATA.COM";
 		final Configuration myconf2 = new Configuration();
 		// 初始化配置文件
-		myconf2.set("fs.defaultFS", "hdfs://prod");
-		myconf2.set("dfs.nameservices", "prod");
-		myconf2.set("dfs.ha.namenodes.prod", "nn1,nn2");
-		myconf2.set("dfs.namenode.rpc-address.prod.nn1", "indata-10-110-13-164.indata.com:8020");
-		myconf2.set("dfs.namenode.rpc-address.prod.nn2", "indata-10-110-13-165.indata.com:8020");
-		myconf2.set("dfs.client.failover.proxy.provider.prod",
+		myconf2.set("fs.defaultFS", "hdfs://cluster-indata");
+		myconf2.set("dfs.nameservices", "cluster-indata");
+		myconf2.set("dfs.ha.namenodes.cluster-indata", "nn1,nn2");
+//		myconf2.set("dfs.namenode.rpc-address.prod.nn1", "indata-10-110-13-125.indata.com:8020");
+//		myconf2.set("dfs.namenode.rpc-address.prod.nn2", "indata-10-110-13-126.indata.com:8020");
+		
+		myconf2.set("dfs.namenode.rpc-address.cluster-indata.nn1", "indata-10-110-13-125.indata.com:8020");
+     	myconf2.set("dfs.namenode.rpc-address.cluster-indata.nn2", "indata-10-110-13-126.indata.com:8020");
+		myconf2.set("dfs.client.failover.proxy.provider.cluster-indata",
 				"org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider");
 		myconf2.set("hadoop.security.authentication", "kerberos");
 		myconf2.set("hadoop.security.authorization", "true");
